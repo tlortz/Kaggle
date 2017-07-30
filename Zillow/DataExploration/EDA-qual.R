@@ -30,7 +30,7 @@ fun_na_prop_vec <- function(vec) {
 
 data_proportions <- data.frame(apply(as.matrix(raw_properties_full),2,function(x){fun_na_prop_vec(x)})) %>%
   rownames_to_column(var = "feature") %>%
-  rename(feature=feature,data_proportion)
+  rename(feature=feature,data_proportion=apply.as.matrix.raw_properties_full...2..function.x...)
 #y <- lapply(data_proportions,function(x){x[[2]][1]})
 populated_value_threshold <- .75
 populated_cols <- data_proportions %>% 
