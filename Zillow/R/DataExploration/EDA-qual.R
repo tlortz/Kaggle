@@ -49,5 +49,14 @@ feature_summaries <- inner_join(col_types,data_proportions) %>%
   left_join(factor_level_counts)
 
 # get usable feature / observation subsets for quantitative analysis
-good_num_features <- filter(feature_summaries,dtype=="integer" || dtype=="double",dtype != "character",data_proportions >= populated_value_threshold) %>%
+good_int_features <- filter(feature_summaries,data_proportion >= populated_value_threshold,feature=="parcelid" | (dtype=="integer" & dtype != "character")) %>%
   select(feature)
+good_num_features <- filter(feature_summaries,data_proportion >= populated_value_threshold,feature=="parcelid" | (dtype=="double" & dtype != "character")) %>%
+  select(feature)
+good_char_features <- filter(feature_summaries,data_proportion >= populated_value_threshold,feature=="parcelid" | dtype != "character") %>%
+  select(feature)
+good_props_numeric <- na.omit(select(populated_properties,one_of(good_num_features$feature)))
+good_props_int <- na.omit(select(populated_properties,one_of(good_int_features$feature)))
+good_props_char <- na.omit(select(populated_properties,one_of(good_char_features$feature)))
+
+rm(raw_properties_full)
